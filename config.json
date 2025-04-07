@@ -1,0 +1,15 @@
+{
+    "dialect": "postgres",
+    "host": "dpg-cvo3deumcj7s73ah655g-a.oregon-postgres.render.com",
+    "port": 5432,
+    "database": "postware_x9q8",
+    "username": "postware_x9q8_user",
+    "password": "Gt8jsylPll9OZ2AlcCdbp8zlV5nNdoi1",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+  }
+  
