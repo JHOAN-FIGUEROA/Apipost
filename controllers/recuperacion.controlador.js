@@ -28,9 +28,9 @@ exports.solicitarRecuperacion = async (req, res) => {
       `
         <p><strong>Email real del usuario:</strong> ${email}</p>
         <p>Haz clic en el siguiente enlace para restablecer la contraseña:</p>
-        <a href="http://localhost:3000/restablecer-contrasena/${token}">
+        <phref="https://apipost-elt2.onrender.com/restablecer-contrasena/${token}">
           Restablecer contraseña
-        </a>
+        <p>
       `
     );
 

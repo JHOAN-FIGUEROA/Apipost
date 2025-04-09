@@ -20,7 +20,7 @@ const solicitarRecuperacion = async (email) => {
   await usuario.save();
 
   // Enlace de recuperación
-  const link = `http://localhost:3000/api/usuarios/restablecer/${token}`;
+  const link = `https://apipost-elt2.onrender.com/api/usuarios/restablecer/${token}`;
 
   // Contenido del correo
   const html = `
