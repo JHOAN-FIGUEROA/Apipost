@@ -6,6 +6,7 @@ const Usuario = require('./usuarios.models');
 const Producto = require('./producto.models')(sequelize, DataTypes);
 const Venta = require('./ventas.models')(sequelize, DataTypes);
 const VentaProducto = require('./ventaproducto')(sequelize, DataTypes);
+const Categoria = require('./categoria.models');
 
 const db = {
   sequelize,
@@ -14,11 +15,13 @@ const db = {
   Usuario,
   Producto,
   Venta,
-  VentaProducto
+  VentaProducto,
+  Categoria
 };
 
 // Asociaciones
 Venta.associate(db);
 VentaProducto.associate(db);
+Categoria.associate(db);
 
 module.exports = db;

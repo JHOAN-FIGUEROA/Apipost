@@ -10,5 +10,6 @@ router.get('/:id', categoriaController.getCategoriaById);
 router.post('/', upload.single('imagen'), categoriaController.createCategoria);
 router.put('/:id', upload.single('imagen'), categoriaController.updateCategoria);
 router.delete('/:id', categoriaController.deleteCategoria);
+router.get('/:id/productos', categoriaController.getProductosByCategoriaId);
 
 module.exports = router;
