@@ -2,6 +2,7 @@ const { Op } = require('sequelize');
 const Categoria = require('../models/categoria.models');
 const cloudinary = require('../config/cloudinary');
 const fs = require('fs');
+const Producto = require('../models/producto.models');
 
 // Crear una nueva categoría
 const createCategoria = async (req, res) => {
@@ -208,10 +209,47 @@ const deleteCategoria = async (req, res) => {
   }
 };
 
+// Obtener productos por ID de categoría
+const getProductosByCategoriaId = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const categoria = await Categoria.findByPk(id, {
+      include: [{
+        model: Producto,
+        as: 'productos'
+      }]
+    });
+
+    console.log('Categoria:', categoria);
+
+    if (!categoria) {
+      return res.status(404).json({
+        success: false,
+        message: "Categoría no encontrada",
+        code: "NO_ENCONTRADA"
+      });
+    }
+
+    res.json({
+      success: true,
+      data: categoria.productos
+    });
+  } catch (error) {
+    console.error("Error en getProductosByCategoriaId:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error al obtener productos de la categoría",
+      code: "ERROR_CONSULTA"
+    });
+  }
+};
+
 module.exports = {
   createCategoria,
   getAllCategorias,
   getCategoriaById,
   updateCategoria,
-  deleteCategoria
+  deleteCategoria,
+  getProductosByCategoriaId
 };

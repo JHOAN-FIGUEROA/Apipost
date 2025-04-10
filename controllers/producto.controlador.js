@@ -4,6 +4,7 @@ const sequelize = require('../config/database');
 const defineProducto = require('../models/producto.models');
 const { Op } = require('sequelize');
 const Producto = defineProducto(sequelize, require('sequelize').DataTypes);
+const Categoria = require('../models/categoria.models');
 
 // Obtener todos los productos con búsqueda por nombre
 exports.obtenerProductos = async (req, res) => {
@@ -120,5 +121,47 @@ exports.eliminarProducto = async (req, res) => {
   } catch (error) {
     console.error("Error al eliminar producto:", error);
     res.status(500).json({ error: 'Error al eliminar producto' });
+  }
+};
+
+Producto.associate = (models) => {
+  Producto.belongsTo(models.Categoria, {
+    foreignKey: 'idcategoria',
+    as: 'categoria'
+  });
+};
+
+exports.getProductosByCategoriaId = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const categoria = await Categoria.findByPk(id, {
+      include: [{
+        model: Producto,
+        as: 'productos'
+      }]
+    });
+
+    console.log('Categoria:', categoria);
+
+    if (!categoria) {
+      return res.status(404).json({
+        success: false,
+        message: "Categoría no encontrada",
+        code: "NO_ENCONTRADA"
+      });
+    }
+
+    res.json({
+      success: true,
+      data: categoria.productos
+    });
+  } catch (error) {
+    console.error("Error en getProductosByCategoriaId:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error al obtener productos de la categoría",
+      code: "ERROR_CONSULTA"
+    });
   }
 };
