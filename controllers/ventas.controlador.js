@@ -1,5 +1,6 @@
 const db = require('../models');
-const { Venta, VentaProducto, Producto, Cliente } = db;
+const { sequelize, Venta, VentaProducto, Producto, Cliente } = db;
+
 
 /**
  * @desc    Crear nueva venta (estado 3 = "Pedido" por defecto)
