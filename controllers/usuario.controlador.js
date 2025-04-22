@@ -17,7 +17,6 @@ const registrarUsuario = async (req, res) => {
     const { nombreusuario, email, contrasena } = usuario;
     const { documentocliente, nombre, apellido, numerocontacto } = cliente;
 
-    // Validación de campos obligatorios
     if (
       !nombreusuario || !email || !contrasena ||
       !documentocliente || !nombre || !apellido || !numerocontacto
@@ -28,7 +27,6 @@ const registrarUsuario = async (req, res) => {
       });
     }
 
-    // Verificar que no exista un usuario con ese email
     const usuarioExistente = await Usuario.findOne({ where: { email } });
     if (usuarioExistente) {
       return res.status(400).json({
@@ -37,10 +35,8 @@ const registrarUsuario = async (req, res) => {
       });
     }
 
-    // Hashear la contraseña
     const hashedPassword = await bcrypt.hash(contrasena, 10);
 
-    // Crear usuario con rol 2 (cliente) y estado 1 (activo)
     const nuevoUsuario = await Usuario.create({
       nombre: nombreusuario,
       email,
@@ -49,16 +45,18 @@ const registrarUsuario = async (req, res) => {
       estado: 1
     });
 
-    // Crear cliente usando el mismo email
     const nuevoCliente = await Cliente.create({
       documentocliente,
       nombre,
       apellido,
-      email, // mismo email
+      email,
       numerocontacto,
       usuario_idusuario: nuevoUsuario.idusuario,
       estado: 1
     });
+
+    // Enviar correo de confirmación
+    await enviarCorreoConfirmacion(nuevoCliente.email, nuevoCliente.nombre);
 
     return res.status(201).json({
       success: true,
@@ -78,6 +76,7 @@ const registrarUsuario = async (req, res) => {
     });
   }
 };
+
 // Iniciar sesión
 const iniciarSesion = async (req, res) => {
   try {
