@@ -108,10 +108,23 @@ const iniciarSesion = async (req, res) => {
       });
     }
 
+    const cliente = await Cliente.findOne({ where: { usuario_idusuario: usuario.idusuario } });
+
+    if (!cliente) {
+      return res.status(404).json({
+        success: false,
+        message: "Cliente no encontrado"
+      });
+    }
+
     return res.status(200).json({
       success: true,
       message: "Inicio de sesión exitoso",
-      data: usuario
+      data: {
+        usuario,
+        clientId: cliente.idcliente, // si usas este campo
+        documentocliente: cliente.documentocliente // ✅ aquí está lo que pediste
+      }
     });
 
   } catch (error) {
@@ -123,6 +136,7 @@ const iniciarSesion = async (req, res) => {
     });
   }
 };
+
 
 module.exports = {
   registrarUsuario,
